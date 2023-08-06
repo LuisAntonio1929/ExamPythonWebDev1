@@ -1,0 +1,50 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+  Tienda {{ tienda.direccion }}
+{% endblock %}
+
+{% block header %}
+  Tienda {{ tienda.direccion }}
+{% endblock %}
+
+{% block buttons %}
+  <div class="col-2">
+    <button hx-get="{% url 'gestionTienda:agregarProducto' %}" hx-target="#editar" class="btn btn-success w-100" >Crear <i class="fa-solid fa-plus"></i></button>
+  </div>
+  <div class="col-2">
+    <button hx-get="{% url 'gestionTienda:eliminarProductos' %}" hx-target="#borrar" class="btn btn-danger w-100">Eliminar Todo <i class="fa-solid fa-trash"></i></button>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="col-10">
+    <table class="table">
+      <thead class="table-dark">
+        <th>ID</th>
+        <th>Descripcion</th>
+        <th>Codigo</th>
+        <th>Precio de Venta</th>
+        <th>Cantidad</th>
+        <th>Tienda</th>
+        <th>Editar</th>
+      </thead>
+      <tbody hx-trigger="load, listaProductoCambio from:body" hx-get="{% url 'gestionTienda:listaTiendaFiltro' pk=tienda.pk  %}" hx-target="this"> 
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block modal %}
+  <div id="modal" class="modal fade">
+    <div id="editar" class="modal-dialog" hx-target="this"></div>
+  </div>
+
+  <div id="modalDelete" class="modal fade">
+    <div id="borrar" class="modal-dialog" hx-target="this"></div>
+  </div>
+
+  <script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.min.js"></script>
+  <script src="{% static 'modalEdit.js' %}"></script>
+{% endblock %}
